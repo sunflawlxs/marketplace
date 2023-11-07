@@ -228,5 +228,6 @@ class ShopCard extends StatelessWidget {
 8. git `add`, `commit`, `push`
 
 ## BONUS Part 1**
-![Uploading Screen Shot 2023-11-07 at 21.46.17.png…]()
+<img width="1280" alt="Screen Shot 2023-11-07 at 21 46 17" src="https://github.com/sunflawlxs/marketplace/assets/123561471/02e8ab26-9a6d-42f7-b837-05ddf58a9eb7">
+
 
