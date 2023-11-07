@@ -1,4 +1,4 @@
-<img width="1280" alt="Screen Shot 2023-11-07 at 21 46 21" src="https://github.com/sunflawlxs/marketplace/assets/123561471/31dc80a0-e240-4e90-ac58-6a6e8bdbbf97">Tugas 7
+# TUGAS 7
 
 
 # Apa perbedaan utama antara stateless dan stateful widget dalam konteks pengembangan aplikasi Flutter?
