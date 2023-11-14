@@ -233,7 +233,7 @@ class ShopCard extends StatelessWidget {
 </details>
 
 <details>
-TUGAS 8
+<summary>Tugas 8</summary>
 # Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
 Navigator.push() dan Navigator.pushReplacement() adalah dua metode yang digunakan untuk melakukan navigasi antara halaman dalam aplikasi Flutter. Perbedaan utama antara kedua metode ini adalah:
 
