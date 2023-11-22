@@ -22,7 +22,7 @@ class MyHomePage extends StatelessWidget {
       // Setting up the app bar with a title and styling.
       appBar: AppBar(
         title: const Text(
-          'MarketPlace',
+          ' marketplace',
         ),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
@@ -42,7 +42,7 @@ class MyHomePage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
-                  'Welcome to MarketPlace!',
+                  'Welcome to  marketplace!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,

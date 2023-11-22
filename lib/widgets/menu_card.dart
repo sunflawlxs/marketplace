@@ -2,11 +2,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:marketplace/screens/list_item.dart';
 import 'package:marketplace/screens/login.dart';
 import 'package:marketplace/screens/marketplace_form.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
 
 // Defining a class to represent items in the shop.
 class ShopItem {
