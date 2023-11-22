@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:marketplace/widgets/left_drawer.dart';
 import 'package:marketplace/widgets/menu_card.dart';
 
-// A StatelessWidget representing the main page of the ScoobyMart application.
+// A StatelessWidget representing the main page of the  marketplace application.
 class MyHomePage extends StatelessWidget {
   // Constructor for the MyHomePage class.
   MyHomePage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class MyHomePage extends StatelessWidget {
       // Setting up the app bar with a title and styling.
       appBar: AppBar(
         title: const Text(
-          'ScoobyMart',
+          'MarketPlace',
         ),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
@@ -38,11 +38,11 @@ class MyHomePage extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
-              // Text widget welcoming the user to ScoobyMart.
+              // Text widget welcoming the user to  marketplace.
               const Padding(
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
-                  'Welcome to ScoobyMart!',
+                  'Welcome to MarketPlace!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,

@@ -16,7 +16,7 @@ class LeftDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          // DrawerHeader with ScoobyMart branding and tagline.
+          // DrawerHeader with  marketplace branding and tagline.
           const DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.indigo,
@@ -24,7 +24,7 @@ class LeftDrawer extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'ScoobyMart',
+                  ' marketplace',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
