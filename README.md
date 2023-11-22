@@ -281,17 +281,490 @@ Untuk menerapkan clean architecture pada aplikasi Flutter, kita perlu mengikuti 
 - Menggunakan dependency injection untuk menyediakan ketergantungan kelas ke kelas lain, misalnya menggunakan paket seperti get_it, injectable, atau kiwi.
 
 # Langkah Implementasi Checklist
-Membuat shoplist_form.dart untuk halaman formulir tambah ramuan yang memiliki 4 elemen input: name, amount, price, dan description, tombol save, validasi tiap elemen, dan pop up data item setelah save form
-Memindahkan class ShopItem dan ShopCard dari menu.dart ke file baru shop_card.dart
-Pada shop_card.dart, mengatur Navigator.push() atau routing dari card Tambah Ramuan di halaman utama ke halaman formulir
-Membuat left_drawer.dart untuk drawer yang memiliki opsi Halaman Utama yang akan routing ke halaman utama jika ditekan dan Tambah Ramuan yang akan routing ke halaman formulir jika ditekan
-Membuat shop_card.dart untuk widget card yang menampilkan produk ramuan
-Membuat items.dart untuk halaman daftar ramuan yang akan menampilkan card dari shop_card.dart
-Menambahkan ListTile Lihat Ramuan di left_drawer.dart yang route ke halaman daftar ramuan
-Menambahkan routing dari card Lihat Ramuan di halaman utama ke halaman daftar ramuan pada shop_card.dart
-Membuat direktori baru screens dan widgets di direktori lib
-Memindahkan items.dart, menu.dart, dan shoplist_form.dart ke direktori screens
-Memindahkan items_card.dart, left_drawer.dart, dan shop_card.dart ke direktori widgets
+1. Pertama, saya mengubah kode yang ada pada `main.dart` sebagai berikut.
+```dart
+import 'package:flutter/material.dart';
+import 'package:marketplace/screens/menu.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter PBP',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        useMaterial3: true,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+```
+<br>
+
+2. Kemudian, pada `lib`, saya membuat folder baru bernama `screens` dan `widgets` di dalamnya. Selain itu, saya memindahkan `menu.dart` ke dalam folder `screens`
+<br>
+
+3. Lalu, saya menambah dan mengubah beberapa kode pada `menu.dart` seperti berikut.
+```dart
+import 'package:flutter/material.dart';
+import 'package:marketplace/widgets/left_drawer.dart';
+import 'package:marketplace/widgets/menu_card.dart';
+
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key? key}) : super(key: key);
+
+  final List<ShopItem> items = [
+    ShopItem("Show Items", Icons.checklist, Colors.pink),
+    ShopItem("Add an Item", Icons.add_shopping_cart, Colors.lightGreen),
+    ShopItem("Logout", Icons.logout, Colors.blue),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'marketplace',
+        ),
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
+      ),
+      drawer: const LeftDrawer(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: Text(
+                  'Welcome to marketplace!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              GridView.count(
+                primary: true,
+                padding: const EdgeInsets.all(20),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                crossAxisCount: 3,
+                shrinkWrap: true,
+                children: items.map((ShopItem item) {
+                  return ShopCard(item);
+                }).toList(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+<br>
+
+4. Selanjutnya, saya membuat `left_drawer.dart` pada direktori `lib/widgets/` sebagai berikut.
+```dart
+import 'package:flutter/material.dart';
+import 'package:marketplace/screens/menu.dart';
+import 'package:marketplace/screens/marketplace_form.dart';
+import 'package:marketplace/screens/marketplace_show.dart';
+
+class LeftDrawer extends StatelessWidget {
+  const LeftDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.indigo,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'marketplace',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10)),
+                Text(
+                  "Simplified inventory management and time-saving efficiency!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home_outlined),
+            title: const Text('Main Page'),
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyHomePage(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_shopping_cart),
+            title: const Text('Add an Item'),
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ShopFormPage(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_shopping_cart),
+            title: const Text('Show Items'),
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ShowItem(),
+                  ));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+```
+<br>
+
+5. Selanjutnya, saya membuat `menu_card.dart` pada direktori `lib/widgets/` sebagai berikut.
+```dart
+import 'package:flutter/material.dart';
+import 'package:marketplace/screens/marketplace_form.dart';
+import 'package:marketplace/screens/marketplace_show.dart';
+
+class ShopItem {
+  final String name;
+  final IconData icon;
+  final Color color;
+
+  ShopItem(this.name, this.icon, this.color);
+}
+
+class Items {
+  final String name;
+  final int price;
+  final String description;
+
+  Items({required this.name, required this.price, required this.description});
+}
+
+class ShopCard extends StatelessWidget {
+  final ShopItem item;
+
+  const ShopCard(this.item, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: item.color,
+      child: InkWell(
+        onTap: () {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+                content: Text("You have pressed the ${item.name} button!")));
+
+          if (item.name == "Add an Item") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ShopFormPage()),
+            );
+          }
+
+          if (item.name == "Show Items") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ShowItem()),
+            );
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  item.icon,
+                  color: Colors.white,
+                  size: 30.0,
+                ),
+                const Padding(padding: EdgeInsets.all(3)),
+                Text(
+                  item.name,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+```
+<br>
+
+6. Lalu, saya membuat `marketplace_form.dart` pada direktori `lib/screens/` seperti berikut.
+```dart
+import 'package:flutter/material.dart';
+import 'package:marketplace/widgets/left_drawer.dart';
+import 'package:marketplace/widgets/menu_card.dart';
+
+List<Items> items = [];
+
+class ShopFormPage extends StatefulWidget {
+  const ShopFormPage({super.key});
+
+  @override
+  State<ShopFormPage> createState() => _ShopFormPageState();
+}
+
+class _ShopFormPageState extends State<ShopFormPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  String _name = "";
+  int _price = 0;
+  String _description = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text(
+            'Add Item Form',
+          ),
+        ),
+        backgroundColor: Colors.lightGreen,
+        foregroundColor: Colors.white,
+      ),
+
+      drawer: const LeftDrawer(),
+
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Item Name",
+                    labelText: "Item Name",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _name = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Name cannot be empty!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Price",
+                    labelText: "Price",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _price = int.parse(value!);
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Price must not be empty!";
+                    }
+                    if (int.tryParse(value) == null) {
+                      return "Price must be numbers!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Description",
+                    labelText: "Description",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _description = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "The description cannot be empty!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.lightGreen),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        items.add(Items(
+                          name: _name,
+                          price: _price,
+                          description: _description,
+                        ));
+
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Item saved successfully'),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Name: $_name'),
+                                    Text('Price: $_price'),
+                                    Text('Description: $_description'),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        _formKey.currentState!.reset();
+                      }
+                    },
+                    child: const Text(
+                      "Save",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+<br>
+
+7. Kemudian, saya membuat `marketplace_show.dart` pada direktori `lib/screens/` seperti berikut.
+```dart
+import 'package:flutter/material.dart';
+import 'package:marketplace/widgets/left_drawer.dart';
+import 'package:marketplace/screens/marketplace_form.dart';
+import 'package:marketplace/widgets/menu_card.dart';
+
+class ShowItem extends StatefulWidget {
+  const ShowItem({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _ShowItemPage();
+}
+
+class _ShowItemPage extends State<ShowItem> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      appBar: AppBar(
+        title: const Text('Items'),
+        backgroundColor: Colors.pink,
+        foregroundColor: Colors.white,
+      ),
+
+      drawer: const LeftDrawer(),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(items[index].name),
+            subtitle: Text(
+                "Price: ${items[index].price} \nDescription: ${items[index].description}"),
+            onTap: () {
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+```
+<br>
+
+
 
 # BONUS
 sudah diimplementasi 
@@ -300,4 +773,409 @@ Referensi:
 https://ngasturi.id/2020/01/04/flutter-navigasi-antar-halaman/
 https://medium.com/komandro-ccit-ftui/tutorial-flutter-layout-be8cfb66904a
 
+</details>
+
+<details>
+<summary>Tugas 9</summary>
+    
+# Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+Pengambilan data JSON tanpa membuat model itu dapat dilakukan. Pada Flutter, kita dapat menggunakan metode `json.decode` untuk mengurai *string* JSON menjadi objek `Map<String, dynamic>` dan mengakses *value* dengan menggunakan *keys*. 
+
+Namun, jika kita mengambil data JSON dengan membuat modelnya terlebih dahulu itu akan lebih unggul dan praktis. Kelas model dapat menyediakan berbagai tipe keamanan, validasi, dan keterbacaan untuk data JSON. Selain itu, dapat membantu terhindar dari kesalahan atau bug yang terjadi saat mengakses data JSON tanpa kelas model. 
+<br>
+
+*Source:*
+* https://stackoverflow.com/questions/75638056/how-to-parse-json-data-without-model-class-in-flutter-and-get-single-value
+* https://blog.logrocket.com/dihttps://stackoverflow.com/questions/68343117/json-request-without-model-binding-in-asp-net-core-webapi
+<br>
+
+# Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+Fungsi CookieRequest adalah untuk menangani pengiriman dan penerimaan *cookie* dalam permintaan HTTP di Flutter. 
+
+*Instance* CookieRequest perlu dibagian ke semua komponen dalam Flutter karena *instance* tersebut menjaga objek *CookieJar* yang menyimpan semua *cookie* untuk domain dan jalur berbeda. Dengan berbagi *instance* CookieRequest yang sama, komponen yang berbeda dapat mengakses *cookie* yang sama dan menghindar pembuatan *cookie* konflik atau duplikat.
+<br>
+
+*Source:*
+* https://stackoverflow.com/questions/52500575/post-request-with-cookies-in-flutter
+* https://codewithflutter.com/how-do-i-make-an-http-request-using-cookies-on-flutter/
+<br>
+# Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+1. Pertama, saya membuat file baru pada folder `lib/screens` dengan nama `list_item.dart` dan menjalankan perintah di terminal Flutter seperti berikut.
+```bash
+flutter pub add http
+```
+<br>
+
+2. Kedua, saya mengimpor *library* yang dibutuhkan di `list_item.dart` seperti berikut.
+```dart
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:marketplace/models/item.dart';
+import 'package:marketplace/screens/show_item.dart';
+import 'package:marketplace/widgets/left_drawer.dart';
+```
+<br>
+
+3. Ketiga, saya membuat fungsi untuk mengambil data dari server dengan mengirimkan GET Request ke URL dengan potongan kode seperti berikut.
+```dart
+var url = Uri.parse('http://127.0.0.1:8000/get-product/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
+```
+<br>
+
+4. Keempat, saya mengambil respons dari permintaan HRRP dengan mengkonversi *string* JSON seperti berikut.
+```dart
+  var data = jsonDecode(utf8.decode(response.bodyBytes));
+```
+<br>
+5. Kelima, saya membuat `list` bernama `listItem` untuk membuat objek *item* dengan menggunakan data JSON seperti berikut.
+```dart
+    List<Product> listItem = [];
+    for (var d in data) {
+      if (d != null) {
+        listItem.add(Product.fromJson(d));
+      }
+    }
+    return listItem;
+```
+<br>
+
+6. keenam, saya membuat halaman untuk menampilkan daftar *item* dan memberikan kemampuan navigasi ke halaman *detail item* ketika pengguna mengklik salah satu *item* dalam daftar dengan kode seperti berikut.
+```dart
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Items'),
+        backgroundColor: Colors.pink,
+        foregroundColor: Colors.white,
+      ),
+      drawer: const LeftDrawer(),
+      body: FutureBuilder(
+        future: fetchProduct(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.data == null) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            if (!snapshot.hasData) {
+              return const Column(
+                children: [
+                  Text(
+                    "No item data.",
+                    style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                  ),
+                  SizedBox(height: 8),
+                ],
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) => Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailProductPage(
+                              product: snapshot.data![index],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${snapshot.data![index].fields.name}",
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (index < snapshot.data!.length - 1) const Divider(),
+                  ],
+                ),
+              );
+            }
+          }
+        },
+      ),
+    );
+  }
+```
+<br>
+
+# Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+1. Pertama, saya membuat metode *view* untuk login pada `authentication/views.py` seperti berikut.
+```python
+@csrf_exempt
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            auth_login(request, user)
+            # Status login sukses.
+            return JsonResponse({
+                "username": user.username,
+                "status": True,
+                "message": "Login sukses!"
+            }, status=200)
+        else:
+            return JsonResponse({
+                "status": False,
+                "message": "Login gagal, akun dinonaktifkan."
+            }, status=401)
+
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Login gagal, periksa kembali email atau kata sandi."
+        }, status=401)
+```
+<br>
+
+2. Kedua, saya nenbuat file `urls.py` pada folder `authentication` dan menambahkan URL *routing* seperti berikut.
+```python
+from django.urls import path
+from authentication.views import login
+
+app_name = 'authentication'
+
+urlpatterns = [
+    path('login/', login, name='login'),
+]
+```
+<br>
+
+3. Ketiga, saya menambahkan `path('auth/', include('authentication.urls')),` pada file `shopping_list/urls.py`.
+<br>
+4. keempat, saya membuat file baru bernama `login.dart` di folder `screens`.
+<br>
+
+5. Kelima, saya menginstal *package* yang telah disediakan dan menjalankannya di terminal seperti berikut.
+```bash
+flutter pub add provider
+flutter pub add pbp_django_auth
+```
+<br>
+6. Keenam, saya mengubah `main.dart` saya menjadi seperti berikut.
+```dart
+import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:marketplace/screens/login.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Provider(
+      create: (_) {
+        CookieRequest request = CookieRequest();
+        return request;
+      },
+      child: MaterialApp(
+        title: 'Flutter App',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          useMaterial3: true,
+        ),
+        home: const LoginPage(),
+      ),
+    );
+  }
+}
+
+```
+<br>
+
+7. Terakhir, saya mengubah `home: MyHomePage()` menjadi `home: LoginPage()` pada `main.dart`.
+<br>
+
+# Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+
+| Nama *Widget* | Fungsi |
+| --- | --- |
+| `AppBar` | Untuk menampilkan bilah atas pada halaman, yaitu `marketplace` |
+| `Scaffold` | Untuk kerangka utama dari halaman, yang mencakup `AppBar` dan `Body` |
+| `Column` | Untuk mengatur *widget-children* secara vertikal |
+| `SnackBar` | Untuk menampilkan pesan singkat yang muncul di bawah layar saat item toko diklik |
+| `ListView.Builder` | Untuk membuat daftar dengan elemen-elemen yang dibuat secara dinamis berdasarkan data atau model tertentu |
+| `TextField` | Untuk menginput teks dari *user* |
+| `Container` | Untuk mengelola tata letak dan konten dalam *card* |
+| `Navigator` | Untuk menavigasi ke halaman baru dan menggantikan halaman tersebut |
+| `FutureBuilder` | Untuk menangani proses pengembalian data yang bersifat asinkron, yaitu mengambil dan menampilkan data *item* dengan menunggu fungsi `fetchProduct()` |
+<br>
+
+# Implementasi checklisst
+
+# Mengintegrasikan Sistem Autentikasi Django dengan Flutter
+1. Pertama, saya membuat `django-app` bernama `authentication` pada proyek Django `shopping_list`.
+<br>
+
+2. Lalu, saya menambahkan `authentication` ke `INSTALLED_APPS` pada *main project* `settings.py` Django.
+<br>
+
+3. Kemudian, saya menjalankan perintah `pip install django-cors-headers` untuk menginstal *library* yang dibutuhkan.
+<br>
+
+4. Lalu, saya menambahkan `corsheaders` ke `INSTALLED_APPS` pada *main project* `settings.py` Django.
+<br>
+
+5. Selanjutnya, saya menambahkan `corsheaders.middleware.CorsMiddleware` pada *main project* `settings.py` Django.
+<br>
+
+6. Lanjut, saya menambahkan beberapa variabel pada *main project* `settings.py` Django seperti berikut.
+```python
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+```
+<br>
+
+# Membuat halaman Login pada Flutter
+1. Pertama, saya membuat metode *view* untuk login pada `authentication/views.py`.
+<br>
+
+2. Kedua, saya nenbuat file `urls.py` pada folder `authentication` dan menambahkan URL *routing*.
+<br>
+
+4. keempat, saya membuat file baru bernama `login.dart` di folder `screens`.
+<br>
+
+5. Kelima, saya menginstal *package* yang telah disediakan dan menjalankannya di terminal seperti berikut.
+```bash
+flutter pub add provider
+flutter pub add pbp_django_auth
+```
+<br>
+6. Keenam, saya memodifikasi `main.dart` saya dan mengubah `home: MyHomePage()` menjadi `home: LoginPage()`.
+<br>
+
+# Membuat Model Kustom sesuai Django
+1. Pertama, saya membuka *endpoint* `JSON` yang sudah dibuat pada Tutorial 2.
+<br>
+
+2. Selanjutnya, saya menyalin data `JSON` dan membuka situs web Quicktype.
+<br>
+
+3. Pada situs tersebut, saya mengubah *setup name* menjadi `Product`, *source type* menjadi `JSON`, dan *language* menjadi `Dart`.
+<br>
+
+4. Lalu, saya menempelkan data JSON yang sudah disalin ke dalam *textbox* yang ada pada Quicktype.
+<br>
+
+5. Kemudian, saya mengklik pilihan `Copy Code` pada Quicktype.
+<br>
+
+6. Setelah mendapatkan kode model dari Quicktype, saya membuka proyek Flutter dan membuat file baru pada folder `lib/models` dengan nama `item.dart` dan menempelkan kode yang disalin dari Quicktype.
+<br>
+
+# Membuat Halaman Berisi Detail Item
+1. Pertama, saya membuat file baru bernama `show_item.dart` yang ada di `lib/screens` seperti berikut.
+```dart
+import 'package:flutter/material.dart';
+import 'package:marketplace/models/item.dart';
+
+class DetailProductPage extends StatelessWidget {
+  final Product product;
+  const DetailProductPage({Key? key, required this.product}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(product.fields.name),
+        backgroundColor: Colors.pink,
+        foregroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              product.fields.name,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text('Price: ${product.fields.price}'),
+            const SizedBox(height: 20),
+            Text('Description: ${product.fields.description}'),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        backgroundColor: Colors.pink,
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.arrow_back),
+      ),
+    );
+  }
+}
+
+```
+<br>
+2. Kemudian, saya mengimpor `'package:marketplace/screens/show_item.dart';` di file `list_item.dart` dan menambahkan beberapa kode yang mengarahkan ke `show_item.dart` dengan potongan kode seperti berikut.
+```dart
+return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) => Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailProductPage(
+                              product: snapshot.data![index],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+      ...
+),
+...
+```
+<br>
+
+3. Terakhir, saya melakukan `add`, `commit`, `push` pada repositori `marketplace` di GitHub.
+<br>
+
+# Bonus
+Bonus sudah saya implementasikan sesuai ketentuan, yaitu membuat `register.dart` dan filter data *item* dari *user*.
+<br>
 </details>
