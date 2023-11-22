@@ -1,4 +1,5 @@
-# TUGAS 7
+<details>
+<summary>Tugas 7</summary>
 
 
 # Apa perbedaan utama antara stateless dan stateful widget dalam konteks pengembangan aplikasi Flutter?
@@ -229,7 +230,74 @@ class ShopCard extends StatelessWidget {
 
 ## BONUS Part 1**
 <img width="1280" alt="Screen Shot 2023-11-07 at 21 46 29" src="https://github.com/sunflawlxs/marketplace/assets/123561471/101be2d7-3302-4c11-a907-ca415b2b2898">
+</details>
 
+<details>
+<summary>Tugas 8</summary>
+# Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
+Navigator.push() dan Navigator.pushReplacement() adalah dua metode yang digunakan untuk melakukan navigasi antara halaman dalam aplikasi Flutter. Perbedaan utama antara kedua metode ini adalah:
 
+Navigator.push() menambahkan halaman baru ke atas tumpukan navigasi, tanpa menghapus halaman sebelumnya. Ini berarti kita bisa kembali ke halaman sebelumnya dengan menekan tombol kembali atau memanggil Navigator.pop().
+Navigator.pushReplacement() menggantikan halaman saat ini dengan halaman baru, dan menghapus halaman saat ini dari tumpukan navigasi. Ini berarti kita tidak bisa kembali ke halaman sebelumnya, karena halaman tersebut sudah dihapus. Contohnya adalah pergantian halaman sederhana, seperti dari halaman 'Home' ke halaman 'Lihat Produk'. Namun, Navigator.pushReplacement() akan menampilkan halaman baru tanpa riwayat halaman sebelumnya atau tidak kembali ke halaman sebelumnya jika tombol back ditekan. Method pushReplacement() menghapus route yang sedang ditampilkan kepada pengguna dan menggantinya dengan suatu route. Method ini menyebabkan aplikasi untuk berpindah dari route yang sedang ditampilkan kepada pengguna ke suatu route yang diberikan. Route lama pada atas stack akan digantikan secara langsung oleh route baru yang diberikan tanpa mengubah kondisi elemen stack yang berada di bawahnya (perhatikan urutan stack). Contoh penggunaannya adalah halaman 'Login', setelah user berhasil login akan masuk ke halaman 'Home'. Untuk itu kita tidak menginginkan user kembali ke halaman 'Login' jika tombol back ditekan.
 
+# Jelaskan masing-masing layout widget pada Flutter dan konteks penggunaannya masing-masing!
+- Untuk mengatur ruang/jarak/posisi/penempatan widget-child:
+Container: Widget dasar untuk mengatur posisi, warna, dan ukuran layar dari beberapa widget-child
+Padding: Memberikan jarak dari dalam widget menuju widget lainnya
+Margin: Memberikan jarak di antara widget
+Align: Menempatkan widget di posisi topLeft, topRight, bottomLeft, bottomRight, dsb.
+Stack: Menempatkan widget di atas satu sama lain (bertumpuk)
 
+- Untuk menampilkan data/item yang dapat digulir
+Row: Mengatur posisi widget yang berada dalam row secara vertikal atau ke kiri
+Column: Mengatur posisi widget yang berada dalam column secara horizontal atau ke bawah
+ListView: Mengatur widget dalam daftar gulir vertikal atau horizontal
+
+- Untuk menampilkan data/item dalam bentuk tabel
+GridView: Mengatur widget dalam susunan dua dimensi
+
+- Elemen Input Form yang Digunakan
+Elemen-elemen input pada proyek ini menggunakan field TextFormField agar dapat dilakukan validasi dan integrasi, yaitu:
+Nama Ramuan (String karena nama ramuan berupa teks)
+Jumlah (int karena jumlah berupa digit angka)
+Harga (int karena harga berupa digit angka)
+Deskripsi (String karena deskripsi berupa teks)
+
+# Bagaimana penerapan clean architecture pada aplikasi Flutter?
+Clean architecture adalah salah satu cara untuk membuat aplikasi Flutter yang bersih, rapi, mudah dipelihara, dan dapat diuji. Clean architecture membagi aplikasi menjadi beberapa lapisan, yaitu:
+
+- Lapisan domain, yang berisi logika bisnis dan model data aplikasi. Lapisan ini tidak bergantung pada kerangka kerja Flutter atau sumber data eksternal, sehingga dapat digunakan kembali di berbagai lingkungan.
+- Lapisan aplikasi, yang berisi kasus penggunaan aplikasi dan menjembatani lapisan infrastruktur dan presentasi. Lapisan ini juga tidak bergantung pada kerangka kerja Flutter, tetapi bergantung pada lapisan domain. Lapisan ini biasanya menggunakan pola desain seperti BLoC, Provider, atau Riverpod untuk mengelola keadaan aplikasi.
+- Lapisan infrastruktur, yang berisi interaksi dengan dunia luar, seperti basis data, server web, atau antarmuka pengguna. Lapisan ini bergantung pada kerangka kerja Flutter dan lapisan aplikasi. Lapisan ini biasanya menggunakan paket seperti dio, http, sqflite, atau firebase untuk mengakses sumber data eksternal.
+- Lapisan presentasi, yang berisi kode yang menampilkan antarmuka pengguna, di mana permintaan dibuat dan respons dikembalikan. Lapisan ini juga bergantung pada kerangka kerja Flutter dan lapisan aplikasi. Lapisan ini biasanya menggunakan widget Flutter untuk membuat tata letak, animasi, dan gaya aplikasi.
+
+Untuk menerapkan clean architecture pada aplikasi Flutter, kita perlu mengikuti beberapa langkah, yaitu:
+
+- Membuat folder untuk setiap lapisan, misalnya domain, application, infrastructure, dan presentation.
+- Membuat file untuk setiap entitas, kasus penggunaan, repositori, sumber data, dan halaman dalam folder yang sesuai.
+- Membuat kelas abstrak untuk repositori dan sumber data di lapisan domain, yang akan diimplementasikan oleh kelas konkret di lapisan infrastruktur.
+- Membuat kelas untuk BLoC, Provider, atau Riverpod di lapisan aplikasi, yang akan mengelola keadaan aplikasi dan menghubungkan lapisan domain dan presentasi.
+- Membuat widget untuk halaman, komponen, dan dialog di lapisan presentasi, yang akan menampilkan antarmuka pengguna dan mengirimkan permintaan ke lapisan aplikasi.
+- Menggunakan dependency injection untuk menyediakan ketergantungan kelas ke kelas lain, misalnya menggunakan paket seperti get_it, injectable, atau kiwi.
+
+# Langkah Implementasi Checklist
+Membuat shoplist_form.dart untuk halaman formulir tambah ramuan yang memiliki 4 elemen input: name, amount, price, dan description, tombol save, validasi tiap elemen, dan pop up data item setelah save form
+Memindahkan class ShopItem dan ShopCard dari menu.dart ke file baru shop_card.dart
+Pada shop_card.dart, mengatur Navigator.push() atau routing dari card Tambah Ramuan di halaman utama ke halaman formulir
+Membuat left_drawer.dart untuk drawer yang memiliki opsi Halaman Utama yang akan routing ke halaman utama jika ditekan dan Tambah Ramuan yang akan routing ke halaman formulir jika ditekan
+Membuat shop_card.dart untuk widget card yang menampilkan produk ramuan
+Membuat items.dart untuk halaman daftar ramuan yang akan menampilkan card dari shop_card.dart
+Menambahkan ListTile Lihat Ramuan di left_drawer.dart yang route ke halaman daftar ramuan
+Menambahkan routing dari card Lihat Ramuan di halaman utama ke halaman daftar ramuan pada shop_card.dart
+Membuat direktori baru screens dan widgets di direktori lib
+Memindahkan items.dart, menu.dart, dan shoplist_form.dart ke direktori screens
+Memindahkan items_card.dart, left_drawer.dart, dan shop_card.dart ke direktori widgets
+
+# BONUS
+sudah diimplementasi 
+
+Referensi:
+https://ngasturi.id/2020/01/04/flutter-navigasi-antar-halaman/
+https://medium.com/komandro-ccit-ftui/tutorial-flutter-layout-be8cfb66904a
+
+</details>
