@@ -1,24 +1,30 @@
+// Importing necessary packages for Flutter and custom screens.
 import 'package:flutter/material.dart';
-import 'package:marketplace/screens/items.dart';
+import 'package:marketplace/screens/list_item.dart';
+import 'package:marketplace/screens/marketplace_form.dart';
 import 'package:marketplace/screens/menu.dart';
-import 'package:marketplace/screens/shoplist_form.dart';
+import 'package:marketplace/screens/marketplace_show.dart';
 
+// A stateless widget representing the left drawer of the application.
 class LeftDrawer extends StatelessWidget {
+  // Constructor for the LeftDrawer class.
   const LeftDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Creating a Drawer with a ListView to display the menu items.
     return Drawer(
       child: ListView(
         children: [
+          // DrawerHeader with ScoobyMart branding and tagline.
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.deepPurple,
+              color: Colors.indigo,
             ),
             child: Column(
               children: [
                 Text(
-                  'Potion in Pot',
+                  'ScoobyMart',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -27,17 +33,23 @@ class LeftDrawer extends StatelessWidget {
                   ),
                 ),
                 Padding(padding: EdgeInsets.all(10)),
-                Text("Catat seluruh keperluan belanjamu di sini!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.normal,)
-                    ),
+                Text(
+                  "Simplified inventory management and time-saving efficiency!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
               ],
             ),
           ),
+
+          // ListTile for navigating to the main page.
           ListTile(
             leading: const Icon(Icons.home_outlined),
-            title: const Text('Halaman Utama'),
-            // Bagian redirection ke MyHomePage
+            title: const Text('Main Page'),
             onTap: () {
               Navigator.pushReplacement(
                   context,
@@ -46,28 +58,29 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.checklist),
-            title: const Text('Lihat Ramuan'),
-            // Bagian redirection ke ShowRamuanPage
-            onTap: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShowRamuanPage(),
-                  ));
-            },
-          ),
+
+          // ListTile for navigating to the 'Add an Item' screen.
           ListTile(
             leading: const Icon(Icons.add_shopping_cart),
-            title: const Text('Tambah Ramuan'),
-            // Bagian redirection ke ShopFormPage
+            title: const Text('Add an Item'),
             onTap: () {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ShopFormPage(),
                   ));
+            },
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.shopping_basket),
+            title: const Text('Show Items'),
+            onTap: () {
+              // Route menu ke halaman produk
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductPage()),
+              );
             },
           ),
         ],
